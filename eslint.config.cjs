@@ -19,6 +19,7 @@ module.exports = [
     },
     plugins: {
       '@typescript-eslint': eslintPlugin,
+      // prettier: require('eslint-plugin-prettier'),
     },
     rules: {
       'no-console': 'warn',
@@ -28,6 +29,7 @@ module.exports = [
       'prefer-const': 'error',
       'no-unused-expressions': 'error',
       'no-undef': 'warn',
+      // 'prettier/prettier': ['error', { endOfLine: 'lf' }],
     },
   },
 ];
