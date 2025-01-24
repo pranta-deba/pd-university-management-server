@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
 
 import {
   TGuardian,
@@ -8,6 +9,8 @@ import {
   StudentModel,
   TUserName,
 } from './student.interface';
+import config from '../../config';
+import { number } from 'joi';
 
 // Define the schema for UserName
 const userNameSchema = new Schema<TUserName>({
@@ -78,6 +81,7 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 // Define the main student schema
 const studentSchema = new Schema<TStudent, StudentModel>({
   id: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   name: { type: userNameSchema, required: true },
   gender: {
     type: String,
@@ -118,6 +122,24 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
     default: 'active',
   },
+});
+
+// pre save middleware/ hook : will work on create() and save()
+studentSchema.pre('save', async function (next) {
+  // console.log(this, 'pre hook: we will save data');
+
+  // hashing password save into DB
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+// post save middleware/ hook
+studentSchema.post('save', function () {
+  console.log(this, 'post hook: we  save our data');
 });
 
 // creating a custom static method
