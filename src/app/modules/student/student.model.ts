@@ -1,42 +1,44 @@
 import { Schema, model } from 'mongoose';
-// import validator from 'validator';
+import validator from 'validator';
 
 import {
-  Guardian,
-  LocalGuardian,
-  Student,
-  UserName,
+  TGuardian,
+  TLocalGuardian,
+  TStudent,
+  StudentMethods,
+  StudentModel,
+  TUserName,
 } from './student.interface';
 
 // Define the schema for UserName
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
     required: [true, 'First name is required'],
     trim: true,
-    // maxlength: [20, 'First name can not be more than 20 characters'],
-    // validate: {
-    //   validator: function (value: string) {
-    //     const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
-    //     return firstNameStr === value ? true : false;
-    //   },
-    //   message: '{VALUE} is not in capitalize format',
-    // },
+    maxlength: [20, 'First name can not be more than 20 characters'],
+    validate: {
+      validator: function (value: string) {
+        const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
+        return firstNameStr === value ? true : false;
+      },
+      message: '{VALUE} is not in capitalize format',
+    },
   },
   middleName: { type: String, trim: true },
   lastName: {
     type: String,
     trim: true,
     required: [true, 'Last name is required'],
-    // validate: {
-    //   validator: (value: string) => validator.isAlpha(value),
-    //   message: '{VALUE} is not valid',
-    // },
+    validate: {
+      validator: (value: string) => validator.isAlpha(value),
+      message: '{VALUE} is not valid',
+    },
   },
 });
 
 // Define the schema for Guardian
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<TGuardian>({
   fatherName: { type: String, required: [true, 'Father name is required'] },
   fatherOccupation: {
     type: String,
@@ -58,7 +60,7 @@ const guardianSchema = new Schema<Guardian>({
 });
 
 // Define the schema for LocalGuardian
-const localGuardianSchema = new Schema<LocalGuardian>({
+const localGuardianSchema = new Schema<TLocalGuardian>({
   name: { type: String, required: [true, 'Local guardian name is required'] },
   Occupation: {
     type: String,
@@ -75,7 +77,7 @@ const localGuardianSchema = new Schema<LocalGuardian>({
 });
 
 // Define the main student schema
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
   id: { type: String, required: true, unique: true },
   name: { type: userNameSchema, required: true },
   gender: {
@@ -95,10 +97,10 @@ const studentSchema = new Schema<Student>({
     type: String,
     required: true,
     unique: true,
-    // validate: {
-    //   validator: (value: string) => validator.isEmail(value),
-    //   message: '{VALUE} is not a valid email type!',
-    // },
+    validate: {
+      validator: (value: string) => validator.isEmail(value),
+      message: '{VALUE} is not a valid email type!',
+    },
   },
   contactNo: { type: String, required: true },
   emergencyContactNo: { type: String, required: true },
@@ -119,5 +121,9 @@ const studentSchema = new Schema<Student>({
   },
 });
 
+studentSchema.methods.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
+};
 // Export the model
-export const StudentModel = model<Student>('Student', studentSchema);
+export const Student = model<TStudent, StudentModel>('Student', studentSchema);
