@@ -10,7 +10,6 @@ import {
   TUserName,
 } from './student.interface';
 import config from '../../config';
-import { number } from 'joi';
 
 // Define the schema for UserName
 const userNameSchema = new Schema<TUserName>({
@@ -122,12 +121,15 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
     default: 'active',
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // pre save middleware/ hook : will work on create() and save()
 studentSchema.pre('save', async function (next) {
   // console.log(this, 'pre hook: we will save data');
-
   // hashing password save into DB
   const user = this;
   user.password = await bcrypt.hash(
@@ -138,8 +140,24 @@ studentSchema.pre('save', async function (next) {
 });
 
 // post save middleware/ hook
-studentSchema.post('save', function () {
-  console.log(this, 'post hook: we  save our data');
+studentSchema.post('save', function (doc, next) {
+  // console.log(this, 'post hook: we  save our data');
+  doc.password = '';
+  next();
+});
+
+// query middleware
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
 });
 
 // creating a custom static method
