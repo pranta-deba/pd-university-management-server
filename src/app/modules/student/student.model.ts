@@ -87,6 +87,10 @@ const studentSchema = new Schema<Student>({
     },
     required: true,
   },
+  dateOfBirth: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
