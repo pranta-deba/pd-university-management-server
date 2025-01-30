@@ -1,36 +1,66 @@
 /* eslint-disable prettier/prettier */
-import { Schema } from 'mongoose';
-import { TAcademicSemeter } from './academicSemester.interface';
+import { model, Schema } from 'mongoose';
+import {
+  TAcademicSemester,
+  TMonths,
+  TAcademicSemesterCode,
+  TAcademicSemesterName,
+} from './academicSemester.interface';
 
-const academicSemesterSchema = new Schema<TAcademicSemeter>(
+const Months: TMonths[] = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+const AcademicSemesterName: TAcademicSemesterName[] = [
+  'Autumn',
+  'Summer',
+  'Fall',
+];
+const AcademicSemesterCode: TAcademicSemesterCode[] = ['01', '02', '03'];
+
+const AcademicSemesterSchema = new Schema<TAcademicSemester>(
   {
-    id: {
+    name: {
       type: String,
+      enum: AcademicSemesterName,
       required: true,
     },
-    password: {
-      type: String,
+    year: {
+      type: Date,
       required: true,
     },
-    needsPasswordChange: {
-      type: Boolean,
-      default: true,
-    },
-    role: {
+    code: {
       type: String,
-      enum: ['admin', 'student', 'faculty'],
+      enum: AcademicSemesterCode,
+      required: true,
     },
-    status: {
+    startMonth: {
       type: String,
-      enum: ['in-progress', 'blocked'],
-      default: 'in-progress',
+      enum: Months,
+      required: true,
     },
-    isDeleted: {
-      type: Boolean,
-      default: false,
+    endMonth: {
+      type: String,
+      enum: Months,
+      required: true,
     },
   },
   {
     timestamps: true,
   },
+);
+
+export const AcademicSemester = model<TAcademicSemester>(
+  'AcademicSemester',
+  AcademicSemesterSchema,
 );
