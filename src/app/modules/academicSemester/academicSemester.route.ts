@@ -1,11 +1,16 @@
 /* eslint-disable prettier/prettier */
 import express from 'express';
 import { AcademicSemesterControllers } from './academicSemester.controller';
+import validateRequest from '../../middlewares/validateRequest';
+import { AcademicSemesterValidations } from './academicSemester.validation';
 
 const router = express.Router();
 
-router.get(
+router.post(
   '/create-academic-semester',
+  validateRequest(
+    AcademicSemesterValidations.createAcademicSemesterValidationSchema,
+  ),
   AcademicSemesterControllers.createAcademicSemester,
 );
 
