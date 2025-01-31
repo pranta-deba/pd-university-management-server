@@ -16,8 +16,17 @@ const getAcademicSemestersIntoDB = async () => {
   const result = await AcademicSemester.find();
   return result;
 };
+
 const getSingleAcademicSemesterIntoDB = async (id: string) => {
   const result = await AcademicSemester.findOne({ _id: id });
+  return result;
+};
+
+const updateSingleAcademicSemesterIntoDB = async (
+  payload: TAcademicSemester,
+  id: string,
+) => {
+  const result = await AcademicSemester.findByIdAndUpdate({ _id: id }, payload);
   return result;
 };
 
@@ -25,4 +34,5 @@ export const AcademicSemesterServices = {
   createAcademicSemesterIntoDB,
   getAcademicSemestersIntoDB,
   getSingleAcademicSemesterIntoDB,
+  updateSingleAcademicSemesterIntoDB,
 };

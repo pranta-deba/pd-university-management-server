@@ -4,6 +4,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AcademicSemesterServices } from './academicSemester.service';
 
+// create semester
 const createAcademicSemester = catchAsync(async (req, res) => {
   const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
     req.body,
@@ -15,7 +16,7 @@ const createAcademicSemester = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
+// get all semester
 const getAcademicSemesters = catchAsync(async (req, res) => {
   const result = await AcademicSemesterServices.getAcademicSemestersIntoDB();
   sendResponse(res, {
@@ -25,7 +26,7 @@ const getAcademicSemesters = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
+// get single semester
 const getSingleAcademicSemester = catchAsync(async (req, res) => {
   const result = await AcademicSemesterServices.getSingleAcademicSemesterIntoDB(
     req.params.id,
@@ -37,9 +38,24 @@ const getSingleAcademicSemester = catchAsync(async (req, res) => {
     data: result,
   });
 });
+// update single semester
+const updateSingleAcademicSemester = catchAsync(async (req, res) => {
+  const result =
+    await AcademicSemesterServices.updateSingleAcademicSemesterIntoDB(
+      req.body,
+      req.params.id,
+    );
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Academic Semester is updated successfully.',
+    data: result,
+  });
+});
 
 export const AcademicSemesterControllers = {
   createAcademicSemester,
   getAcademicSemesters,
   getSingleAcademicSemester,
+  updateSingleAcademicSemester,
 };
