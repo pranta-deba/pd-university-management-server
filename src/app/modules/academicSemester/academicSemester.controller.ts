@@ -17,45 +17,48 @@ const createAcademicSemester = catchAsync(async (req, res) => {
   });
 });
 // get all semester
-const getAcademicSemesters = catchAsync(async (req, res) => {
-  const result = await AcademicSemesterServices.getAcademicSemestersIntoDB();
+const getAllAcademicSemesters = catchAsync(async (req, res) => {
+  const result = await AcademicSemesterServices.getAllAcademicSemestersFromDB();
+
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Academic Semesters are retrieved successfully.',
+    message: 'Academic semesters are retrieved successfully',
     data: result,
   });
 });
 // get single semester
 const getSingleAcademicSemester = catchAsync(async (req, res) => {
-  const result = await AcademicSemesterServices.getSingleAcademicSemesterIntoDB(
-    req.params.id,
-  );
+  const { semesterId } = req.params;
+  const result =
+    await AcademicSemesterServices.getSingleAcademicSemesterFromDB(semesterId);
+
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Academic Semester is retrieved successfully.',
+    message: 'Academic semester is retrieved successfully',
     data: result,
   });
 });
 // update single semester
-const updateSingleAcademicSemester = catchAsync(async (req, res) => {
-  const result =
-    await AcademicSemesterServices.updateSingleAcademicSemesterIntoDB(
-      req.body,
-      req.params.id,
-    );
+const updateAcademicSemester = catchAsync(async (req, res) => {
+  const { semesterId } = req.params;
+  const result = await AcademicSemesterServices.updateAcademicSemesterIntoDB(
+    semesterId,
+    req.body,
+  );
+
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Academic Semester is updated successfully.',
+    message: 'Academic semester is retrieved successfully',
     data: result,
   });
 });
 
 export const AcademicSemesterControllers = {
   createAcademicSemester,
-  getAcademicSemesters,
+  getAllAcademicSemesters,
   getSingleAcademicSemester,
-  updateSingleAcademicSemester,
+  updateAcademicSemester,
 };
