@@ -6,9 +6,8 @@ import { AcademicDepartmentServices } from './academicDepartment.service';
 
 // create Department
 const createAcademicDepartment = catchAsync(async (req, res) => {
-  const result = await AcademicDepartmentServices.createAcademicDepartmentIntoDB(
-    req.body,
-  );
+  const result =
+    await AcademicDepartmentServices.createAcademicDepartmentIntoDB(req.body);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
@@ -18,7 +17,8 @@ const createAcademicDepartment = catchAsync(async (req, res) => {
 });
 // get all Department
 const getAllAcademicFaDepartments = catchAsync(async (req, res) => {
-  const result = await AcademicDepartmentServices.getAllAcademicDepartmentFromDB();
+  const result =
+    await AcademicDepartmentServices.getAllAcademicDepartmentFromDB();
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -31,7 +31,9 @@ const getAllAcademicFaDepartments = catchAsync(async (req, res) => {
 const getSingleAcademicDepartment = catchAsync(async (req, res) => {
   const { departmentId } = req.params;
   const result =
-    await AcademicDepartmentServices.getSingleAcademicDepartmentFromDB(departmentId);
+    await AcademicDepartmentServices.getSingleAcademicDepartmentFromDB(
+      departmentId,
+    );
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -43,10 +45,11 @@ const getSingleAcademicDepartment = catchAsync(async (req, res) => {
 // update single Department
 const updateAcademicDepartment = catchAsync(async (req, res) => {
   const { departmentId } = req.params;
-  const result = await AcademicDepartmentServices.updateAAcademicDepartmentIntoDB(
-    departmentId,
-    req.body,
-  );
+  const result =
+    await AcademicDepartmentServices.updateAcademicDepartmentIntoDB(
+      departmentId,
+      req.body,
+    );
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -56,7 +59,7 @@ const updateAcademicDepartment = catchAsync(async (req, res) => {
   });
 });
 
-export const AcademicFacultyControllers = {
+export const AcademicDepartmentControllers = {
   createAcademicDepartment,
   getAllAcademicFaDepartments,
   getSingleAcademicDepartment,

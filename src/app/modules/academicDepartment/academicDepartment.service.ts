@@ -18,7 +18,7 @@ const getSingleAcademicDepartmentFromDB = async (id: string) => {
   return result;
 };
 
-const updateAAcademicDepartmentIntoDB = async (
+const updateAcademicDepartmentIntoDB = async (
   id: string,
   payload: Partial<TAcademicDepartment>,
 ) => {
@@ -36,5 +36,5 @@ export const AcademicDepartmentServices = {
   createAcademicDepartmentIntoDB,
   getAllAcademicDepartmentFromDB,
   getSingleAcademicDepartmentFromDB,
-  updateAAcademicDepartmentIntoDB,
+  updateAcademicDepartmentIntoDB,
 };
