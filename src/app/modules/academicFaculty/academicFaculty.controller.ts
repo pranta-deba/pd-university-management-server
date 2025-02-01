@@ -42,16 +42,16 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
 });
 // update single Faculty
 const updateAcademicFaculty = catchAsync(async (req, res) => {
-  const { semesterId } = req.params;
+  const { facultyId } = req.params;
   const result = await AcademicFacultyServices.updateAAcademicFacultyIntoDB(
-    semesterId,
+    facultyId,
     req.body,
   );
 
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Academic Faculty is retrieved successfully',
+    message: 'Academic Faculty is updated successfully',
     data: result,
   });
 });
