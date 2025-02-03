@@ -60,11 +60,35 @@ const deleteStudentFromDB = async (id: string) => {
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
+    throw new Error('Failed to create student!');
   }
 };
 
 const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
-  const result = await Student.findOneAndUpdate({ id }, payload);
+  const { name, guardian, localGuardian, ...remainingStudentData } = payload;
+  const modifiedUpdateData: Record<string, unknown> = {
+    ...remainingStudentData,
+  };
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdateData[`name.${key}`] = value;
+    }
+  }
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedUpdateData[`guardian.${key}`] = value;
+    }
+  }
+  if (localGuardian && Object.keys(localGuardian).length) {
+    for (const [key, value] of Object.entries(localGuardian)) {
+      modifiedUpdateData[`localGuardian.${key}`] = value;
+    }
+  }
+
+  const result = await Student.findOneAndUpdate({ id }, modifiedUpdateData, {
+    new: true,
+    runValidators: true,
+  });
   return result;
 };
 
