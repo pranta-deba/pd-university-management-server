@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { ZodError, ZodIssue } from 'zod';
-import { TErrorSources } from '../interface/error';
+import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
-const handleZodError = (err: ZodError) => {
+const handleZodError = (err: ZodError) : TGenericErrorResponse => {
   const errorSource: TErrorSources = err.issues.map((issue: ZodIssue) => {
     return {
       path: issue?.path[issue.path.length - 1],
