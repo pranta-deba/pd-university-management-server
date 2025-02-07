@@ -7,15 +7,14 @@ import { TStudent } from './student.interface';
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   // {email : {$regex: query.searchTerm, $options: i}}
-  // {presentAddress : {$regex: query.searchTerm, $options: i}}
-  // {'name.firstName' : {$regex: query.searchTerm, $options: i}}
+  const studentSearchableFields = ['email', 'name.firstName', 'presentAddress'];
   let searchTerm = '';
   if (query?.searchTerm) {
-    searchTerm = query?.searchTerm;
+    searchTerm = query?.searchTerm as string;
   }
 
   const result = await Student.find({
-    $or: ['email', 'name.firstName', 'presentAddress'].map((filed) => ({
+    $or: studentSearchableFields.map((filed) => ({
       [filed]: { $regex: searchTerm, $options: 'i' },
     })),
   })
