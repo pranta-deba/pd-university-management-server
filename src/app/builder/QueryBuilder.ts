@@ -43,8 +43,19 @@ class QueryBuilder<T> {
   }
 
   paginate() {
-    const page = this?.query?.page || 1;
-    const limit = this?.query?.limit || 1;
-    const skip = this?.query?.skip || 0;
+    const page = Number(this?.query?.page) || 1;
+    const limit = Number(this?.query?.limit) || 1;
+    const skip = (page - 1) * limit;
+    this.modelQuery = this.modelQuery.skip(skip).limit(limit);
+    return this;
+  }
+
+  fields() {
+    const fields =
+      (this?.query?.fields as string).split(',').join(' ') || '-__v';
+    this.modelQuery = this.modelQuery.select(fields);
+    return this;
   }
 }
+
+export default QueryBuilder;
