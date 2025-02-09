@@ -36,5 +36,15 @@ class QueryBuilder<T> {
     return this;
   }
 
-  
+  sort() {
+    const sort = this?.query?.sort || '-createdAt';
+    this.modelQuery = this.modelQuery.sort(sort as string);
+    return this;
+  }
+
+  paginate() {
+    const page = this?.query?.page || 1;
+    const limit = this?.query?.limit || 1;
+    const skip = this?.query?.skip || 0;
+  }
 }
