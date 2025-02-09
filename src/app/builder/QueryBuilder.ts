@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Query } from 'mongoose';
+import { FilterQuery, Query } from 'mongoose';
 
 /* eslint-disable prettier/prettier */
 class QueryBuilder<T> {
@@ -11,5 +11,17 @@ class QueryBuilder<T> {
     this.query = query;
   }
 
-  search(searchableFields: string[]) {}
+  search(searchableFields: string[]) {
+    if (this?.query?.searchTerm) {
+      this.modelQuery = this.modelQuery.find({
+        $or: searchableFields.map(
+          (filed) =>
+            ({
+              [filed]: { $regex: this?.query?.searchTerm, $options: 'i' },
+            }) as FilterQuery<T>,
+        ),
+      });
+    }
+    return this;
+  }
 }
