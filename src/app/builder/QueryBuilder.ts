@@ -12,12 +12,13 @@ class QueryBuilder<T> {
   }
 
   search(searchableFields: string[]) {
-    if (this?.query?.searchTerm) {
+    const searchTerm = this?.query?.searchTerm;
+    if (searchTerm) {
       this.modelQuery = this.modelQuery.find({
         $or: searchableFields.map(
           (filed) =>
             ({
-              [filed]: { $regex: this?.query?.searchTerm, $options: 'i' },
+              [filed]: { $regex: searchTerm, $options: 'i' },
             }) as FilterQuery<T>,
         ),
       });
@@ -34,4 +35,6 @@ class QueryBuilder<T> {
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
     return this;
   }
+
+  
 }
