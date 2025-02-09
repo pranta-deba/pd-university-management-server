@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { TAcademicSemester } from '../academicSemester/academicSemester.interface';
 import { User } from './user.model';
 
