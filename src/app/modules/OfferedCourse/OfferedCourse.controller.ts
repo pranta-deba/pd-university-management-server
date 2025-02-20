@@ -26,3 +26,16 @@ const getAllOfferedCourses = catchAsync(async (req: Request, res: Response) => {
   //     data: result,
   //   });
 });
+
+const getSingleOfferedCourses = catchAsync(
+    async (req: Request, res: Response) => {
+      const { id } = req.params;
+      //   const result =
+      //   sendResponse(res, {
+      //     statusCode: status.OK,
+      //     success: true,
+      //     message: 'OfferedCourse fetched successfully',
+      //     data: result,
+      //   });
+    },
+  );
