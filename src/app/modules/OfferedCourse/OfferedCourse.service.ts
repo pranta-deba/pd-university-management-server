@@ -9,6 +9,7 @@ import { AcademicDepartment } from '../academicDepartment/academicDepartment.mod
 import { Course } from '../Course/course.model';
 import { Faculty } from '../Faculty/faculty.model';
 import { hasTimeConflict } from './OfferedCourse.utils';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -109,7 +110,16 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   return result;
 };
 
-const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {};
+const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
+  const offeredCourseQuery = new QueryBuilder(OfferedCourse.find(), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await offeredCourseQuery.modelQuery;
+  return result;
+};
 
 const getSingleOfferedCourseFromDB = async (id: string) => {};
 
