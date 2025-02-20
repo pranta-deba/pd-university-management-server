@@ -5,12 +5,28 @@ import { TSemesterRegistration } from './semesterRegistration.interface';
 import AppError from '../../errors/AppError';
 import { SemesterRegistration } from './semesterRegistration.model';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { RegistrationStatus } from './semesterRegistration.constant';
 
 /* eslint-disable prettier/prettier */
 const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
 ) => {
   const academicSemester = payload?.academicSemester;
+
+  //check if there any registered semester that is already 'UPCOMING'|'ONGOING'
+  const isThereAnyUpcomingOrOngoingSEmester =
+    await SemesterRegistration.findOne({
+      $or: [
+        { status: RegistrationStatus.UPCOMING },
+        { status: RegistrationStatus.ONGOING },
+      ],
+    });
+  if (isThereAnyUpcomingOrOngoingSEmester) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      `There is already an ${isThereAnyUpcomingOrOngoingSEmester.status} registered semester !`,
+    );
+  }
 
   // checking if the semester is exists
   const isAcademicSemesterExists =
@@ -52,7 +68,6 @@ const getSingleSemesterRegistrationsFromDB = async (id: string) => {
 
   return result;
 };
-
 
 const updateSemesterRegistrationIntoDB = async (
   id: string,
