@@ -62,7 +62,6 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     _id: academicDepartment,
     academicFaculty,
   });
-
   if (!isDepartmentBelongToFaculty) {
     throw new AppError(
       status.BAD_REQUEST,
@@ -71,6 +70,19 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   }
 
   //Step 7: check if the same offered course same section in same registered semester exists
+  const isSameOfferedCourseExistsWithSameRegisteredSemesterWithSameSection =
+    await OfferedCourse.findOne({
+      semesterRegistration,
+      course,
+      section,
+    });
+  if (isSameOfferedCourseExistsWithSameRegisteredSemesterWithSameSection) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      `Offered course with same section is already exist!`,
+    );
+  }
+
   //Step 8: get the schedules of the faculties
   //Step 9: check if the faculty is available at that time. If not then throw error
   //Step 10: create the offered course
