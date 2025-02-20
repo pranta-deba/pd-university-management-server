@@ -95,6 +95,8 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     startTime,
     endTime,
   };
+
+  //Step 9: check if the faculty is available at that time. If not then throw error
   if (hasTimeConflict(assignedSchedules, newSchedule)) {
     throw new AppError(
       status.CONFLICT,
@@ -102,9 +104,7 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     );
   }
 
-  //Step 9: check if the faculty is available at that time. If not then throw error
   //Step 10: create the offered course
-
   const result = await OfferedCourse.create({ ...payload, academicSemester });
   return result;
 };
