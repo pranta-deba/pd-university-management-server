@@ -5,6 +5,7 @@ import { TOfferedCourse } from './OfferedCourse.interface';
 import { OfferedCourse } from './OfferedCourse.model';
 import { SemesterRegistration } from '../semesterRegistration/semesterRegistration.model';
 import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
+import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -25,17 +26,21 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   if (!isSemesterRegistrationExits) {
     throw new AppError(status.NOT_FOUND, 'Semester registration not found !');
   }
+  const academicSemester = isSemesterRegistrationExits.academicSemester;
 
   //Step 2: check if the academic faculty id is exists!
   const isAcademicFacultyExits =
     await AcademicFaculty.findById(academicFaculty);
-
   if (!isAcademicFacultyExits) {
     throw new AppError(status.NOT_FOUND, 'Academic Faculty not found !');
   }
 
   // Step 3: check if the academic department id is exists!
-
+  const isAcademicDepartmentExits =
+    await AcademicDepartment.findById(academicDepartment);
+  if (!isAcademicDepartmentExits) {
+    throw new AppError(status.NOT_FOUND, 'Academic Department not found !');
+  }
 
   const result = await OfferedCourse.create(payload);
   return result;
