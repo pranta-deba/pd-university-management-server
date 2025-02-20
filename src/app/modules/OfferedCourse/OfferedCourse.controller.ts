@@ -67,3 +67,11 @@ const deleteOfferedCourseFromDB = catchAsync(
     });
   },
 );
+
+export const OfferedCourseControllers = {
+  createOfferedCourse,
+  getAllOfferedCourses,
+  getSingleOfferedCourses,
+  updateOfferedCourse,
+  deleteOfferedCourseFromDB,
+};
