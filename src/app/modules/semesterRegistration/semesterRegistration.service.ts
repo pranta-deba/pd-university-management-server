@@ -82,16 +82,13 @@ const updateSemesterRegistrationIntoDB = async (
   }
 
   //if the requested semester registration is ended , we will not update anything
-  const currentSemesterStatus = isSemesterRegistrationExists?.status;
-  const requestedStatus = payload?.status;
-  if (currentSemesterStatus === RegistrationStatus.ENDED) {
+  const requestedSemester = await SemesterRegistration.findById(id);
+  if (requestedSemester?.status === 'ENDED') {
     throw new AppError(
-      status.BAD_REQUEST,
-      `This semester is already ${currentSemesterStatus}`,
+      status.NOT_FOUND,
+      `This semester is already ${requestedSemester?.status}`,
     );
   }
-
-  
 };
 
 const deleteSemesterRegistrationFromDB = async (id: string) => {};
