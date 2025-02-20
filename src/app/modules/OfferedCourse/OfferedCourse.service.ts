@@ -144,6 +144,11 @@ const updateOfferedCourseIntoDB = async (
   }
 
   // Step 2: check if the faculty exists
+  const isFacultyExists = await Faculty.findById(faculty);
+  if (!isFacultyExists) {
+    throw new AppError(status.NOT_FOUND, 'Faculty not found !');
+  }
+
   // Step 3: check if the semester registration status is upcoming
   // Step 4: check if the faculty is available at that time. If not then throw error
   // Step 5: update the offered course
