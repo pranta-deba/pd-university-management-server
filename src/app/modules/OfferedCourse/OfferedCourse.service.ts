@@ -7,6 +7,7 @@ import { SemesterRegistration } from '../semesterRegistration/semesterRegistrati
 import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { Course } from '../Course/course.model';
+import { Faculty } from '../Faculty/faculty.model';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -51,6 +52,12 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   }
 
   //Step 5: check if the faculty id is exists!
+  const isFacultyExits = await Faculty.findById(faculty);
+
+  if (!isFacultyExits) {
+    throw new AppError(status.NOT_FOUND, 'Faculty not found !');
+  }
+
   //Step 6: check if the department is belong to the  faculty
   //Step 7: check if the same offered course same section in same registered semester exists
   //Step 8: get the schedules of the faculties
