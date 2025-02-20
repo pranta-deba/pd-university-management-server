@@ -58,6 +58,18 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   }
 
   //Step 6: check if the department is belong to the  faculty
+  const isDepartmentBelongToFaculty = await AcademicDepartment.findOne({
+    _id: academicDepartment,
+    academicFaculty,
+  });
+
+  if (!isDepartmentBelongToFaculty) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      `This ${isAcademicDepartmentExits.name} is not  belong to this ${isAcademicFacultyExits.name}`,
+    );
+  }
+
   //Step 7: check if the same offered course same section in same registered semester exists
   //Step 8: get the schedules of the faculties
   //Step 9: check if the faculty is available at that time. If not then throw error
