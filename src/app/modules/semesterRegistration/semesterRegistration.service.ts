@@ -91,10 +91,39 @@ const updateSemesterRegistrationIntoDB = async (
       `This semester is already ${currentSemesterStatus}`,
     );
   }
-  
+
+  // UPCOMING --> ONGOING --> ENDED
+  if (
+    currentSemesterStatus === RegistrationStatus.UPCOMING &&
+    requestedStatus === RegistrationStatus.ENDED
+  ) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      `You can not directly change status from ${currentSemesterStatus} to ${requestedStatus}`,
+    );
+  }
+
+  if (
+    currentSemesterStatus === RegistrationStatus.ONGOING &&
+    requestedStatus === RegistrationStatus.UPCOMING
+  ) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      `You can not directly change status from ${currentSemesterStatus} to ${requestedStatus}`,
+    );
+  }
+
+  const result = await SemesterRegistration.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
 };
 
-const deleteSemesterRegistrationFromDB = async (id: string) => {};
+const deleteSemesterRegistrationFromDB = async (id: string) => {
+  
+};
 
 export const SemesterRegistrationService = {
   createSemesterRegistrationIntoDB,
