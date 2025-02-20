@@ -55,3 +55,23 @@ const getAllSemesterRegistrations = catchAsync(
       });
     },
   );
+
+
+  const updateSemesterRegistration = catchAsync(
+    async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const result =
+        await SemesterRegistrationService.updateSemesterRegistrationIntoDB(
+          id,
+          req.body,
+        );
+  
+      sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Semester Registration is updated successfully',
+        data: result,
+      });
+    },
+  );
+  
