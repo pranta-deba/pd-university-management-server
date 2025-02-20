@@ -10,7 +10,10 @@ const getAllSemesterRegistrationsFromDB = async (
   query: Record<string, unknown>,
 ) => {};
 
+const getSingleSemesterRegistrationsFromDB = async (id: string) => {}
+
 export const SemesterRegistrationService = {
   createSemesterRegistrationIntoDB,
   getAllSemesterRegistrationsFromDB,
+  getSingleSemesterRegistrationsFromDB
 };
