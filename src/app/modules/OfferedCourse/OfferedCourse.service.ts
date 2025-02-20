@@ -134,7 +134,20 @@ const getSingleOfferedCourseFromDB = async (id: string) => {
 const updateOfferedCourseIntoDB = async (
   id: string,
   payload: Pick<TOfferedCourse, 'faculty' | 'days' | 'startTime' | 'endTime'>,
-) => {};
+) => {
+  const { faculty, days, startTime, endTime } = payload;
+
+  //  Step 1: check if the offered course exists
+  const isOfferedCourseExists = await OfferedCourse.findById(id);
+  if (!isOfferedCourseExists) {
+    throw new AppError(status.NOT_FOUND, 'Offered course not found !');
+  }
+
+  // Step 2: check if the faculty exists
+  // Step 3: check if the semester registration status is upcoming
+  // Step 4: check if the faculty is available at that time. If not then throw error
+  // Step 5: update the offered course
+};
 
 const deleteOfferedCourseFromDB = async (id: string) => {};
 
