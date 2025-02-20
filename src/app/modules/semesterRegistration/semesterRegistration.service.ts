@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
+import status from 'http-status';
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { TSemesterRegistration } from './semesterRegistration.interface';
+import AppError from '../../errors/AppError';
 
 /* eslint-disable prettier/prettier */
 const createSemesterRegistrationIntoDB = async (
@@ -9,8 +11,11 @@ const createSemesterRegistrationIntoDB = async (
   const academicSemester = payload?.academicSemester;
 
   // checking if the semester is exists
-    const isAcademicSemesterExists = await AcademicSemester.findById(academicSemester);
-
+  const isAcademicSemesterExists =
+    await AcademicSemester.findById(academicSemester);
+  if (!isAcademicSemesterExists) {
+    throw new AppError(status.NOT_FOUND, 'This academic semester not found !');
+  }
 };
 
 const getAllSemesterRegistrationsFromDB = async (
