@@ -72,7 +72,27 @@ const getSingleSemesterRegistrationsFromDB = async (id: string) => {
 const updateSemesterRegistrationIntoDB = async (
   id: string,
   payload: Partial<TSemesterRegistration>,
-) => {};
+) => {
+  // check if the requested registered semester is exists
+  // check if the semester is already registered!
+  const isSemesterRegistrationExists = await SemesterRegistration.findById(id);
+
+  if (!isSemesterRegistrationExists) {
+    throw new AppError(status.NOT_FOUND, 'This semester is not found !');
+  }
+
+  //if the requested semester registration is ended , we will not update anything
+  const currentSemesterStatus = isSemesterRegistrationExists?.status;
+  const requestedStatus = payload?.status;
+  if (currentSemesterStatus === RegistrationStatus.ENDED) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      `This semester is already ${currentSemesterStatus}`,
+    );
+  }
+
+  
+};
 
 const deleteSemesterRegistrationFromDB = async (id: string) => {};
 
