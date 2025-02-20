@@ -29,3 +29,11 @@ const updateOfferedCourseIntoDB = async (
 ) => {};
 
 const deleteOfferedCourseFromDB = async (id: string) => {};
+
+export const OfferedCourseServices = {
+  createOfferedCourseIntoDB,
+  getAllOfferedCoursesFromDB,
+  getSingleOfferedCourseFromDB,
+  deleteOfferedCourseFromDB,
+  updateOfferedCourseIntoDB,
+};
