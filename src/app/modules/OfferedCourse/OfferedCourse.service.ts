@@ -27,3 +27,5 @@ const updateOfferedCourseIntoDB = async (
   id: string,
   payload: Pick<TOfferedCourse, 'faculty' | 'days' | 'startTime' | 'endTime'>,
 ) => {};
+
+const deleteOfferedCourseFromDB = async (id: string) => {};
