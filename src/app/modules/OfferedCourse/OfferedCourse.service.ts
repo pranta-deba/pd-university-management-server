@@ -20,3 +20,5 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
 };
 
 const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {};
+
+const getSingleOfferedCourseFromDB = async (id: string) => {}
