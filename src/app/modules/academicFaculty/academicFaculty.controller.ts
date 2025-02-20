@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import status from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';

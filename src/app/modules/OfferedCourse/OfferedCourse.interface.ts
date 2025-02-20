@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Types } from 'mongoose';
 
 export type TDays = 'Sat' | 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';

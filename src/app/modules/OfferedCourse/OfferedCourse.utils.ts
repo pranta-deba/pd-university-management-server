@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { TSchedule } from './OfferedCourse.interface';
 
 export const hasTimeConflict = (

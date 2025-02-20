@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import status from 'http-status';
 import AppError from '../../errors/AppError';
 import { academicSemesterNameCodeMapper } from './academicSemester.constant';
@@ -8,7 +7,7 @@ import { AcademicSemester } from './academicSemester.model';
 const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
   // handle duplicate semester
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
-    throw new AppError(status.NOT_FOUND,'Invalid Semester Code!');
+    throw new AppError(status.NOT_FOUND, 'Invalid Semester Code!');
   }
   const result = await AcademicSemester.create(payload);
   return result;
@@ -33,7 +32,7 @@ const updateAcademicSemesterIntoDB = async (
     payload.code &&
     academicSemesterNameCodeMapper[payload.name] !== payload.code
   ) {
-    throw new AppError(status.NOT_FOUND,'Invalid Semester Code');
+    throw new AppError(status.NOT_FOUND, 'Invalid Semester Code');
   }
 
   const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {

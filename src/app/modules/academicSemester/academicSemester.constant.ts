@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   TAcademicSemesterCode,
   TAcademicSemesterName,
@@ -6,7 +5,6 @@ import {
   TMonths,
 } from './academicSemester.interface';
 
-/* eslint-disable prettier/prettier */
 export const Months: TMonths[] = [
   'January',
   'February',

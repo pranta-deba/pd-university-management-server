@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import mongoose, { Schema } from 'mongoose';
 import { SemesterRegistrationStatus } from './semesterRegistration.constant';
 import { TSemesterRegistration } from './semesterRegistration.interface';

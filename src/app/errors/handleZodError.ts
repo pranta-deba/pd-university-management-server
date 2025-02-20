@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
 import { ZodError, ZodIssue } from 'zod';
 import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
-const handleZodError = (err: ZodError) : TGenericErrorResponse => {
+const handleZodError = (err: ZodError): TGenericErrorResponse => {
   const errorSource: TErrorSources = err.issues.map((issue: ZodIssue) => {
     return {
       path: issue?.path[issue.path.length - 1],
@@ -15,7 +14,7 @@ const handleZodError = (err: ZodError) : TGenericErrorResponse => {
   return {
     statusCode,
     message: 'validation error!',
-    errorSource
+    errorSource,
   };
 };
 export default handleZodError;

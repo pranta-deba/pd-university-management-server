@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { z } from 'zod';
 import { BloodGroup, Gender } from './faculty.constant';
 

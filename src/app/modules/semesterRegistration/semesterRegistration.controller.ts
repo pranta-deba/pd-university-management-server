@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Request, Response } from 'express';
 import { SemesterRegistrationService } from './semesterRegistration.service';
 import status from 'http-status';

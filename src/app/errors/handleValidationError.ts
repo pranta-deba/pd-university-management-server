@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import mongoose from 'mongoose';
 import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 
 const catchAsync = (fn: RequestHandler) => {

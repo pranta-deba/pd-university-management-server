@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import status from 'http-status';

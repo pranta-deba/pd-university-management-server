@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { FacultyControllers } from './faculty.controller';

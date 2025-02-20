@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { model, Schema } from 'mongoose';
 import { TAcademicFaculty } from './academicFaculty.interface';
 

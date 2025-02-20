@@ -1,15 +1,12 @@
-/* eslint-disable prettier/prettier */
 import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
-/* eslint-disable prettier/prettier */
 const handleDuplicateError = (err: any): TGenericErrorResponse => {
-
   const match = err.message.match(/"([^"]*)"/);
   const extractedMessage = match && match[1];
 
   const errorSource: TErrorSources = [
     {
-      path: "",
+      path: '',
       message: `${extractedMessage} is already exists!`,
     },
   ];

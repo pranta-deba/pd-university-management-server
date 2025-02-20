@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import status from 'http-status';
 import AppError from '../../errors/AppError';
 import { TOfferedCourse } from './OfferedCourse.interface';

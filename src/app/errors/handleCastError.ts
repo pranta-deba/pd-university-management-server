@@ -1,8 +1,6 @@
-/* eslint-disable prettier/prettier */
 import mongoose from 'mongoose';
 import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
-/* eslint-disable prettier/prettier */
 const handleCastError = (
   err: mongoose.Error.CastError,
 ): TGenericErrorResponse => {

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';

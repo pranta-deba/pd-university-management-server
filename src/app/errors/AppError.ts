@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 class AppError extends Error {
   public statusCode: number;
 

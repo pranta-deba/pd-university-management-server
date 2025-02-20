@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { model, Schema } from 'mongoose';
 import { TAcademicDepartment } from './academicDepartment.interface';
 import AppError from '../../errors/AppError';

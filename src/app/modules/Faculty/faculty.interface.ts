@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Model, Types } from 'mongoose';
 
 export type TGender = 'male' | 'female' | 'other';

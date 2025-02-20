@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import mongoose, { Schema } from 'mongoose';
 import { Days } from './OfferedCourse.constant';
 import { TOfferedCourse } from './OfferedCourse.interface';

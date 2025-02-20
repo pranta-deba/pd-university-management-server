@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { Response } from 'express';
 
 type TResponse<T> = {

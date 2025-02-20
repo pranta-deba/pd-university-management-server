@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { TAcademicDepartment } from './academicDepartment.interface';
 import { AcademicDepartment } from './academicDepartment.model';
 
@@ -14,7 +12,8 @@ const getAllAcademicDepartmentFromDB = async () => {
 };
 
 const getSingleAcademicDepartmentFromDB = async (id: string) => {
-  const result = await AcademicDepartment.findById(id).populate('academicFaculty');
+  const result =
+    await AcademicDepartment.findById(id).populate('academicFaculty');
   return result;
 };
 

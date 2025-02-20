@@ -1,7 +1,5 @@
-/* eslint-disable prettier/prettier */
 import { FilterQuery, Query } from 'mongoose';
 
-/* eslint-disable prettier/prettier */
 class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
   public query: Record<string, unknown>;

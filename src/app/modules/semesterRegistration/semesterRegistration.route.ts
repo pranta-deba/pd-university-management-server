@@ -1,10 +1,8 @@
-/* eslint-disable prettier/prettier */
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { SemesterRegistrationController } from './semesterRegistration.controller';
 import { SemesterRegistrationValidations } from './semesterRegistration.validation';
 
-/* eslint-disable prettier/prettier */
 const router = express.Router();
 
 router.post(
