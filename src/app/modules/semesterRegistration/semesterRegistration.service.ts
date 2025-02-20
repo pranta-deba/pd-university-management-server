@@ -6,8 +6,11 @@ const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
 ) => {};
 
-
+const getAllSemesterRegistrationsFromDB = async (
+  query: Record<string, unknown>,
+) => {};
 
 export const SemesterRegistrationService = {
   createSemesterRegistrationIntoDB,
+  getAllSemesterRegistrationsFromDB,
 };
