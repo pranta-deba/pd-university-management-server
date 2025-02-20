@@ -74,4 +74,20 @@ const getAllSemesterRegistrations = catchAsync(
       });
     },
   );
+
+
+  const deleteSemesterRegistration = catchAsync(
+    async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const result =
+        await SemesterRegistrationService.deleteSemesterRegistrationFromDB(id);
+  
+      sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Semester Registration is updated successfully',
+        data: result,
+      });
+    },
+  );
   
