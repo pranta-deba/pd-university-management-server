@@ -37,4 +37,21 @@ const getAllSemesterRegistrations = catchAsync(
     },
   );
 
+
+  const getSingleSemesterRegistration = catchAsync(
+    async (req: Request, res: Response) => {
+      const { id } = req.params;
   
+      const result =
+        await SemesterRegistrationService.getSingleSemesterRegistrationsFromDB(
+          id,
+        );
+  
+      sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Semester Registration is retrieved successfully',
+        data: result,
+      });
+    },
+  );
