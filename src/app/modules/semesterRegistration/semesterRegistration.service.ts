@@ -10,10 +10,16 @@ const getAllSemesterRegistrationsFromDB = async (
   query: Record<string, unknown>,
 ) => {};
 
-const getSingleSemesterRegistrationsFromDB = async (id: string) => {}
+const getSingleSemesterRegistrationsFromDB = async (id: string) => {};
+
+const updateSemesterRegistrationIntoDB = async (
+  id: string,
+  payload: Partial<TSemesterRegistration>,
+) => {};
 
 export const SemesterRegistrationService = {
   createSemesterRegistrationIntoDB,
   getAllSemesterRegistrationsFromDB,
-  getSingleSemesterRegistrationsFromDB
+  getSingleSemesterRegistrationsFromDB,
+  updateSemesterRegistrationIntoDB,
 };
