@@ -1,6 +1,9 @@
 /* eslint-disable prettier/prettier */
+import status from 'http-status';
+import AppError from '../../errors/AppError';
 import { TOfferedCourse } from './OfferedCourse.interface';
 import { OfferedCourse } from './OfferedCourse.model';
+import { SemesterRegistration } from '../semesterRegistration/semesterRegistration.model';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -14,6 +17,13 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     startTime,
     endTime,
   } = payload;
+
+  //check if the semester registration id is exists!
+  const isSemesterRegistrationExits =
+    await SemesterRegistration.findById(semesterRegistration);
+  if (!isSemesterRegistrationExits) {
+    throw new AppError(status.NOT_FOUND, 'Semester registration not found !');
+  }
 
   const result = await OfferedCourse.create(payload);
   return result;
