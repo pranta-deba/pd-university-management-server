@@ -4,6 +4,7 @@ import { User } from '../user/user.model';
 import AppError from '../../errors/AppError';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
+import bcrypt from 'bcrypt';
 
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
@@ -71,10 +72,24 @@ const changePassword = async (
     throw new AppError(status.FORBIDDEN, 'Password do not matched');
   }
 
-  await User.findOneAndUpdate({
-    id: userData.userId,
-    role: userData.role,
-  });
+  //hash new password
+  const newHashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  // finally changed
+  await User.findOneAndUpdate(
+    {
+      id: userData.userId,
+      role: userData.role,
+    },
+    {
+      password: newHashedPassword,
+      needsPasswordChange: false,
+      passwordChangedAt: new Date(),
+    },
+  );
 
   return null;
 };

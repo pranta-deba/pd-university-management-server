@@ -24,7 +24,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
     statusCode: status.OK,
     success: true,
     message: 'Password changed in successfully!',
-    data: null,
+    data: result,
   });
 });
 
