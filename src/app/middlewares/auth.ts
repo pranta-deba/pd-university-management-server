@@ -44,6 +44,16 @@ const auth = (...requiredRoles: TUserRole[]) => {
     }
     //-----------------------------------------
 
+    if (
+      user.passwordChangedAt &&
+      User.isJWTIssuedBeforePasswordChanged(
+        user.passwordChangedAt,
+        iat as number,
+      )
+    ) {
+      throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
+    }
+
     // role verify
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
