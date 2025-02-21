@@ -66,6 +66,11 @@ const changePassword = async (
     throw new AppError(status.FORBIDDEN, 'This user is blocked ! !');
   }
 
+  //checking if the password is correct
+  if (!(await User.isPasswordMatched(payload.oldPassword, user?.password))) {
+    throw new AppError(status.FORBIDDEN, 'Password do not matched');
+  }
+
   await User.findOneAndUpdate({
     id: userData.userId,
     role: userData.role,
