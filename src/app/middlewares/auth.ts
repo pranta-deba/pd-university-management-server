@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../errors/AppError';
 import status from 'http-status';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
 
 const auth = () => {
@@ -24,7 +24,7 @@ const auth = () => {
           throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
         }
         // decoded
-        console.log(decoded);
+        req.user = decoded as JwtPayload;
       },
     );
 
