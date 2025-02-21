@@ -2,7 +2,6 @@ import status from 'http-status';
 import { TLoginUser } from './auth.interface';
 import { User } from '../user/user.model';
 import AppError from '../../errors/AppError';
-import bcrypt from 'bcrypt';
 
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
