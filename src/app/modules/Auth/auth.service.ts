@@ -6,9 +6,14 @@ import AppError from '../../errors/AppError';
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
   const isUserExists = await User.findOne({ id: payload.id });
-
   if (!isUserExists) {
     throw new AppError(status.NOT_FOUND, 'This user is not found !');
+  }
+
+  // checking if the user is already deleted
+  const isDeleted = isUserExists?.isDeleted;
+  if (isDeleted) {
+    throw new AppError(status.FORBIDDEN, 'This user is deleted !');
   }
 
   return {};
