@@ -2,7 +2,7 @@ import status from 'http-status';
 import { TLoginUser } from './auth.interface';
 import { User } from '../user/user.model';
 import AppError from '../../errors/AppError';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 
 const loginUser = async (payload: TLoginUser) => {
@@ -44,7 +44,23 @@ const loginUser = async (payload: TLoginUser) => {
   };
 };
 
-const changePassword = async () => {};
+const changePassword = async (
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string },
+) => {
+  // checking if the user is exist
+  const user = await User.isUserExistsByCustomId(userData.userId);
+  if (!user) {
+    throw new AppError(status.NOT_FOUND, 'This user is not found !');
+  }
+
+  await User.findOneAndUpdate({
+    id: userData.userId,
+    role: userData.role,
+  });
+
+  return null;
+};
 
 const refreshToken = async () => {};
 
