@@ -60,6 +60,12 @@ const changePassword = async (
     throw new AppError(status.FORBIDDEN, 'This user is deleted !');
   }
 
+  // checking if the user is blocked
+  const userStatus = user?.status;
+  if (userStatus === 'blocked') {
+    throw new AppError(status.FORBIDDEN, 'This user is blocked ! !');
+  }
+
   await User.findOneAndUpdate({
     id: userData.userId,
     role: userData.role,
