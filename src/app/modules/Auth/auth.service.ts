@@ -54,6 +54,12 @@ const changePassword = async (
     throw new AppError(status.NOT_FOUND, 'This user is not found !');
   }
 
+  // checking if the user is already deleted
+  const isDeleted = user?.isDeleted;
+  if (isDeleted) {
+    throw new AppError(status.FORBIDDEN, 'This user is deleted !');
+  }
+
   await User.findOneAndUpdate({
     id: userData.userId,
     role: userData.role,
