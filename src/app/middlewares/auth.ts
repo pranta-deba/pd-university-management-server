@@ -5,6 +5,7 @@ import status from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
 import { TUserRole } from '../modules/user/user.interface';
+import { User } from '../modules/user/user.model';
 
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -16,27 +17,41 @@ const auth = (...requiredRoles: TUserRole[]) => {
     }
 
     // checking if the given token is valid
-    jwt.verify(
+    const decoded = jwt.verify(
       token,
       config.jwt_access_secret as string,
-      function (err, decoded) {
-        // err
-        if (err) {
-          throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
-        }
+    ) as JwtPayload;
 
-        const role = (decoded as JwtPayload).role;
+    const { role, userId, iat } = decoded;
 
-        // role verify
-        if (requiredRoles && !requiredRoles.includes(role)) {
-          throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
-        }
+    //--------------------------------------
+    // checking if the user is exist
+    const user = await User.isUserExistsByCustomId(userId);
+    if (!user) {
+      throw new AppError(status.NOT_FOUND, 'This user is not found !');
+    }
 
-        // decoded
-        req.user = decoded as JwtPayload;
-        next();
-      },
-    );
+    // checking if the user is already deleted
+    const isDeleted = user?.isDeleted;
+    if (isDeleted) {
+      throw new AppError(status.FORBIDDEN, 'This user is deleted !');
+    }
+
+    // checking if the user is blocked
+    const userStatus = user?.status;
+    if (userStatus === 'blocked') {
+      throw new AppError(status.FORBIDDEN, 'This user is blocked !');
+    }
+    //-----------------------------------------
+
+    // role verify
+    if (requiredRoles && !requiredRoles.includes(role)) {
+      throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
+    }
+
+    // decoded
+    req.user = decoded as JwtPayload;
+    next();
   });
 };
 
