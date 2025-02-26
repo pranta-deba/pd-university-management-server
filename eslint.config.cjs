@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const eslintPlugin = require('@typescript-eslint/eslint-plugin');
 const eslintParser = require('@typescript-eslint/parser');
 const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
