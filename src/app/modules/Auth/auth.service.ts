@@ -236,7 +236,17 @@ const resetPassword = async (
     Number(config.bcrypt_salt_rounds),
   );
 
-  console.log(decoded);
+  await User.findOneAndUpdate(
+    {
+      id: decoded.userId,
+      role: decoded.role,
+    },
+    {
+      password: newHashedPassword,
+      needsPasswordChange: false,
+      passwordChangedAt: new Date(),
+    },
+  );
 };
 
 export const AuthServices = {
