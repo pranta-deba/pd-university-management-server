@@ -221,7 +221,6 @@ const resetPassword = async (
   ) as JwtPayload;
 
   if (payload.id !== decoded.userId) {
-    console.log(payload.id, decoded.userId);
     throw new AppError(status.FORBIDDEN, 'You are forbidden!');
   }
 
