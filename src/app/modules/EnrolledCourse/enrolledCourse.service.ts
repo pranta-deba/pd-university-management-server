@@ -190,7 +190,19 @@ const updateEnrolledCourseMarksIntoDB = async (
     throw new AppError(status.FORBIDDEN, 'You are forbidden! !');
   }
 
-  // step 6: update course marks
+  // step 6: check final marks updated completed
+  if (courseMarks?.finalTerm) {
+    const { classTest1, classTest2, midTerm, finalTerm } =
+      isCourseBelongToFaculty.courseMarks;
+
+    const totalMarks =
+      Math.ceil(classTest1 * 0.1) +
+      Math.ceil(midTerm * 0.3) +
+      Math.ceil(classTest2 * 0.1) +
+      Math.ceil(finalTerm * 0.5);
+  }
+
+  // step 7: update course marks
   const modifiedData: Record<string, unknown> = {
     ...courseMarks,
   };
