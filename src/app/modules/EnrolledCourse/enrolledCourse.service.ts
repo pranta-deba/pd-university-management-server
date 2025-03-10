@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 import { SemesterRegistration } from '../semesterRegistration/semesterRegistration.model';
 import { Course } from '../Course/course.model';
 import { Faculty } from '../Faculty/faculty.model';
+import { calculateGradeAndPoints } from './enrolledCourse.utils';
 
 const createEnrolledCourseIntoDB = async (
   userId: string,
@@ -191,6 +192,10 @@ const updateEnrolledCourseMarksIntoDB = async (
   }
 
   // step 6: check final marks updated completed
+  const modifiedData: Record<string, unknown> = {
+    ...courseMarks,
+  };
+
   if (courseMarks?.finalTerm) {
     const { classTest1, classTest2, midTerm, finalTerm } =
       isCourseBelongToFaculty.courseMarks;
@@ -200,13 +205,13 @@ const updateEnrolledCourseMarksIntoDB = async (
       Math.ceil(midTerm * 0.3) +
       Math.ceil(classTest2 * 0.1) +
       Math.ceil(finalTerm * 0.5);
+    const result = calculateGradeAndPoints(totalMarks);
+    modifiedData.grade = result.grade;
+    modifiedData.gradePoints = result.gradePoints;
+    modifiedData.isCompleted = true;
   }
 
   // step 7: update course marks
-  const modifiedData: Record<string, unknown> = {
-    ...courseMarks,
-  };
-
   if (courseMarks && Object.keys(courseMarks).length) {
     for (const [key, value] of Object.entries(courseMarks)) {
       modifiedData[`courseMarks.${key}`] = value;
