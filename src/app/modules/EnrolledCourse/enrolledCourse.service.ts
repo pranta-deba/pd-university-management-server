@@ -149,7 +149,7 @@ const updateEnrolledCourseMarksIntoDB = async (
 ) => {
   const { semesterRegistration, offeredCourse, student, courseMarks } = payload;
 
-  //   step 1 : check if Semester Registration is  exist
+  // step 1 : check if Semester Registration is  exist
   const isSemesterRegistrationExists =
     await SemesterRegistration.findById(semesterRegistration);
 
@@ -157,7 +157,7 @@ const updateEnrolledCourseMarksIntoDB = async (
     throw new AppError(status.NOT_FOUND, 'Semester registration not found !');
   }
 
-  //   step 2 : check if offered course is exist
+  // step 2 : check if offered course is exist
   const isOfferedCourseExists = await OfferedCourse.findById(offeredCourse);
 
   if (!isOfferedCourseExists) {
@@ -176,6 +176,18 @@ const updateEnrolledCourseMarksIntoDB = async (
 
   if (!faculty) {
     throw new AppError(status.NOT_FOUND, 'Faculty not found !');
+  }
+
+  // step 5: check if course belong to faculty
+  const isCourseBelongToFaculty = await EnrolledCourse.findOne({
+    semesterRegistration,
+    offeredCourse,
+    student,
+    faculty: faculty._id,
+  });
+
+  if (!isCourseBelongToFaculty) {
+    throw new AppError(status.FORBIDDEN, 'You are forbidden! !');
   }
 };
 
