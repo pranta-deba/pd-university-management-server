@@ -34,7 +34,7 @@ router.post(
 router.get(
   '/me',
   auth(USER_ROLE.student, USER_ROLE.faculty, USER_ROLE.admin),
-  UserControllers.createAdmin,
+  UserControllers.getMe,
 );
 
 router.post(
