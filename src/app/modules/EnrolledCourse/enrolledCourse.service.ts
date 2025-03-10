@@ -57,6 +57,12 @@ const createEnrolledCourseIntoDB = async (
   if (!result) {
     throw new AppError(status.BAD_REQUEST, 'Failed to enroll in this course !');
   }
+  const maxCapacity = isOfferedCourseExists.maxCapacity;
+  await OfferedCourse.findByIdAndUpdate(offeredCourse, {
+    maxCapacity: maxCapacity - 1,
+  });
+
+  return result;
 };
 
 const updateEnrolledCourseMarksIntoDB = async () => {};
