@@ -23,17 +23,17 @@ const sendImageToCloudinary = async (imageName: string, path: string) => {
           reject(error);
         }
         resolve(result);
+
+        // delete the image from temporary storage
+        fs.unlink(path, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log('Success');
+          }
+        });
       },
     );
-
-    // delete the image from temporary storage
-    fs.unlink(path, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('Success');
-      }
-    });
   });
 };
 
