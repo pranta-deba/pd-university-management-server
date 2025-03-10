@@ -13,15 +13,22 @@ const createEnrolledCourseIntoDB = async (
 
   // Step1: Check if the offered courses is exists
   const isOfferedCourseExists = await OfferedCourse.findById(offeredCourse);
+
   if (!isOfferedCourseExists) {
     throw new AppError(status.NOT_FOUND, 'Offered course not found !');
   }
 
-  // Step2: Check if the student is already enrolled
+  // Step2: Check if offered course max capacity is over
+  if (isOfferedCourseExists.maxCapacity <= 0) {
+    throw new AppError(status.BAD_GATEWAY, 'Room is full !');
+  }
+
+  // Step3: Check if the student is already enrolled
   const student = await Student.findOne({ id: userId }, { _id: 1 });
   if (!student) {
     throw new AppError(status.NOT_FOUND, 'Student not found !');
   }
+
   const isStudentAlreadyEnrolled = await EnrolledCourse.findOne({
     semesterRegistration: isOfferedCourseExists?.semesterRegistration,
     offeredCourse,
@@ -32,8 +39,8 @@ const createEnrolledCourseIntoDB = async (
     throw new AppError(status.CONFLICT, 'Student is already enrolled !');
   }
 
-  // Step3: Check if the max credits exceed
-  // Step4: Create an enrolled course
+  // Step4: Check if the max credits exceed
+  // Step5: Create an enrolled course
 };
 
 const updateEnrolledCourseMarksIntoDB = async () => {};
