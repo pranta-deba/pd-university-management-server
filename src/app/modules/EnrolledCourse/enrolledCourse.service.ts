@@ -4,6 +4,7 @@ import { TEnrolledCourse } from './enrolledCourse.interface';
 import AppError from '../../errors/AppError';
 import { Student } from '../student/student.model';
 import EnrolledCourse from './enrolledCourse.model';
+import mongoose from 'mongoose';
 
 const createEnrolledCourseIntoDB = async (
   userId: string,
@@ -40,29 +41,56 @@ const createEnrolledCourseIntoDB = async (
   }
 
   // Step4: Check if the max credits exceed
-  // Step5: Create an enrolled course
-  const result = await EnrolledCourse.create([
-    {
-      semesterRegistration: isOfferedCourseExists.semesterRegistration,
-      academicSemester: isOfferedCourseExists.academicSemester,
-      academicFaculty: isOfferedCourseExists.academicFaculty,
-      academicDepartment: isOfferedCourseExists.academicDepartment,
-      offeredCourse: offeredCourse,
-      course: isOfferedCourseExists.course,
-      student: student._id,
-      faculty: isOfferedCourseExists.faculty,
-      isEnrolled: true,
-    },
-  ]);
-  if (!result) {
-    throw new AppError(status.BAD_REQUEST, 'Failed to enroll in this course !');
-  }
-  const maxCapacity = isOfferedCourseExists.maxCapacity;
-  await OfferedCourse.findByIdAndUpdate(offeredCourse, {
-    maxCapacity: maxCapacity - 1,
-  });
 
-  return result;
+  // create transition
+  const session = await mongoose.startSession();
+
+  try {
+    // transition is started
+    session.startTransaction();
+
+    // Step5: Create an enrolled course
+    const result = await EnrolledCourse.create(
+      [
+        {
+          semesterRegistration: isOfferedCourseExists.semesterRegistration,
+          academicSemester: isOfferedCourseExists.academicSemester,
+          academicFaculty: isOfferedCourseExists.academicFaculty,
+          academicDepartment: isOfferedCourseExists.academicDepartment,
+          offeredCourse: offeredCourse,
+          course: isOfferedCourseExists.course,
+          student: student._id,
+          faculty: isOfferedCourseExists.faculty,
+          isEnrolled: true,
+        },
+      ],
+      { session },
+    );
+    if (!result) {
+      throw new AppError(
+        status.BAD_REQUEST,
+        'Failed to enroll in this course !',
+      );
+    }
+    const maxCapacity = isOfferedCourseExists.maxCapacity;
+    await OfferedCourse.findByIdAndUpdate(
+      offeredCourse,
+      {
+        maxCapacity: maxCapacity - 1,
+      },
+      { session },
+    );
+
+    // end transition
+    await session.commitTransaction();
+    await session.endSession();
+
+    return result;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
 };
 
 const updateEnrolledCourseMarksIntoDB = async () => {};
