@@ -162,6 +162,13 @@ const updateEnrolledCourseMarksIntoDB = async (
   if (!isOfferedCourseExists) {
     throw new AppError(status.NOT_FOUND, 'Offered course not found !');
   }
+
+  // step 3: check if student is exist
+  const isStudentExists = await Student.findById(student);
+
+  if (!isStudentExists) {
+    throw new AppError(status.NOT_FOUND, 'Student not found !');
+  }
 };
 
 export const EnrolledCourseServices = {
