@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { v2 as cloudinary } from 'cloudinary';
+import config from '../config';
 const sendImageToCloudinary = async () => {
   // Configuration
   cloudinary.config({
-    cloud_name: 'dfxzi4gis',
-    api_key: '888746126451144',
-    api_secret: 'Ez56z8hqyLAx0aMrer3yq5yepwg',
+    cloud_name: config.cloudinary_cloud_name,
+    api_key: config.cloudinary_api_key,
+    api_secret: config.cloudinary_api_secret,
   });
 
   // Upload an image
