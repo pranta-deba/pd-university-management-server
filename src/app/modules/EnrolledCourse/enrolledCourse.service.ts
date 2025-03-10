@@ -18,7 +18,7 @@ const createEnrolledCourseIntoDB = async (
     throw new AppError(status.NOT_FOUND, 'Offered course not found !');
   }
 
-  // Step2: Check if offered course max capacity is over
+  // Step2: Check if offered course max capacity is exceeded
   if (isOfferedCourseExists.maxCapacity <= 0) {
     throw new AppError(status.BAD_GATEWAY, 'Room is full !');
   }
@@ -41,6 +41,22 @@ const createEnrolledCourseIntoDB = async (
 
   // Step4: Check if the max credits exceed
   // Step5: Create an enrolled course
+  const result = await EnrolledCourse.create([
+    {
+      semesterRegistration: isOfferedCourseExists.semesterRegistration,
+      academicSemester: isOfferedCourseExists.academicSemester,
+      academicFaculty: isOfferedCourseExists.academicFaculty,
+      academicDepartment: isOfferedCourseExists.academicDepartment,
+      offeredCourse: offeredCourse,
+      course: isOfferedCourseExists.course,
+      student: student._id,
+      faculty: isOfferedCourseExists.faculty,
+      isEnrolled: true,
+    },
+  ]);
+  if (!result) {
+    throw new AppError(status.BAD_REQUEST, 'Failed to enroll in this course !');
+  }
 };
 
 const updateEnrolledCourseMarksIntoDB = async () => {};
