@@ -5,6 +5,8 @@ import AppError from '../../errors/AppError';
 import { Student } from '../student/student.model';
 import EnrolledCourse from './enrolledCourse.model';
 import mongoose from 'mongoose';
+import { SemesterRegistration } from '../semesterRegistration/semesterRegistration.model';
+import { Course } from '../Course/course.model';
 
 const createEnrolledCourseIntoDB = async (
   userId: string,
@@ -40,7 +42,58 @@ const createEnrolledCourseIntoDB = async (
     throw new AppError(status.CONFLICT, 'Student is already enrolled !');
   }
 
-  // Step4: Check if the max credits exceed
+  // step4: check total credits exceeds maxCredit
+  const course = await Course.findById(isOfferedCourseExists.course);
+  const currentCredit = course?.credits;
+
+  // Step5: check total credits exceeds maxCredit
+  const semesterRegistration = await SemesterRegistration.findById(
+    isOfferedCourseExists.semesterRegistration,
+  ).select('maxCredit');
+  const maxCredit = semesterRegistration?.maxCredit;
+
+  const enrolledCourses = await EnrolledCourse.aggregate([
+    {
+      $match: {
+        semesterRegistration: isOfferedCourseExists.semesterRegistration,
+        student: student._id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'courses',
+        localField: 'course',
+        foreignField: '_id',
+        as: 'enrolledCourseData',
+      },
+    },
+    {
+      $unwind: '$enrolledCourseData',
+    },
+    {
+      $group: {
+        _id: null,
+        totalEnrolledCredits: { $sum: '$enrolledCourseData.credits' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        totalEnrolledCredits: 1,
+      },
+    },
+  ]);
+
+  // step6: total enrolled credits + new enrolled course credit > maxCredit
+  const totalCredits =
+    enrolledCourses.length > 0 ? enrolledCourses[0].totalEnrolledCredits : 0;
+
+  if (totalCredits && maxCredit && totalCredits + currentCredit > maxCredit) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      'You have exceeded maximum number of credits !',
+    );
+  }
 
   // create transition
   const session = await mongoose.startSession();
@@ -49,7 +102,7 @@ const createEnrolledCourseIntoDB = async (
     // transition is started
     session.startTransaction();
 
-    // Step5: Create an enrolled course
+    // Step7: Create an enrolled course
     const result = await EnrolledCourse.create(
       [
         {
@@ -73,13 +126,9 @@ const createEnrolledCourseIntoDB = async (
       );
     }
     const maxCapacity = isOfferedCourseExists.maxCapacity;
-    await OfferedCourse.findByIdAndUpdate(
-      offeredCourse,
-      {
-        maxCapacity: maxCapacity - 1,
-      },
-      { session },
-    );
+    await OfferedCourse.findByIdAndUpdate(offeredCourse, {
+      maxCapacity: maxCapacity - 1,
+    });
 
     // end transition
     await session.commitTransaction();
