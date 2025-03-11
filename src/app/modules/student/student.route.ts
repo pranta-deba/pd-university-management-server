@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.patch(
   '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(studentValidations.updateStudentValidationSchema),
   StudentControllers.updateStudent,
 );
@@ -21,13 +22,13 @@ router.get(
 
 router.delete(
   '/:id',
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   StudentControllers.deleteStudent,
 );
 
 router.get(
   '/',
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   StudentControllers.getAllStudents,
 );
 
