@@ -231,6 +231,9 @@ const getMeIntoDB = async (userId: string, role: string) => {
   if (role === 'faculty') {
     result = await Faculty.findOne({ id: userId }).populate('user');
   }
+  if (role === 'superAdmin') {
+    result = await Faculty.findOne({ id: userId }).populate('user');
+  }
   return result;
 };
 
