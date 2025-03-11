@@ -12,7 +12,7 @@ const superUser = {
   isDeleted: false,
 };
 
-//when database is connected, we will check is there any user who is super admin
+// when database is connected, we will check is there any user who is super admin
 const seedSuperAdmin = async () => {
   const isSuperAdminExits = await User.findOne({ role: USER_ROLE.superAdmin });
 
