@@ -49,13 +49,18 @@ router.post(
 
 router.get(
   '/me',
-  auth(USER_ROLE.student, USER_ROLE.faculty, USER_ROLE.admin),
+  auth(
+    USER_ROLE.student,
+    USER_ROLE.faculty,
+    USER_ROLE.admin,
+    USER_ROLE.superAdmin,
+  ),
   UserControllers.getMe,
 );
 
 router.post(
   '/change-status/:id',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   validateRequest(UserValidation.changeStatusValidationSchema),
   UserControllers.changeStatus,
 );
