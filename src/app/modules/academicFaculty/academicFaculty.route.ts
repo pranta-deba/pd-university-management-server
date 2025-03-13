@@ -18,10 +18,15 @@ router.post(
 
 router.get('/:facultyId', AcademicFacultyControllers.getSingleAcademicFaculty);
 
-router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
+router.get(
+  '/',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
+  AcademicFacultyControllers.getAllAcademicFaculties,
+);
 
 router.patch(
   '/:facultyId',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(
     AcademicFacultyValidation.UpdateAcademicFacultyValidationSchema,
   ),
