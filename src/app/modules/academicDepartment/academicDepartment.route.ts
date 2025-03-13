@@ -18,13 +18,19 @@ router.post(
 
 router.get(
   '/:departmentId',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
   AcademicDepartmentControllers.getSingleAcademicDepartment,
 );
 
-router.get('/', AcademicDepartmentControllers.getAllAcademicFaDepartments);
+router.get(
+  '/',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
+  AcademicDepartmentControllers.getAllAcademicFaDepartments,
+);
 
 router.patch(
   '/:departmentId',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(
     AcademicDepartmentValidation.UpdateAcademicDepartmentValidationSchema,
   ),
