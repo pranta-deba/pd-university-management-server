@@ -122,7 +122,15 @@ const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
   return { meta, data: result };
 };
 
-const getMyOfferedCoursesFromDB = async (userId: string) => {
+const getMyOfferedCoursesFromDB = async (
+  userId: string,
+  query: Record<string, unknown>,
+) => {
+  //pagination setup
+  const page = Number(query?.page) || 1;
+  const limit = Number(query?.limit) || 10;
+  const skip = (page - 1) * limit;
+
   // find student
   const student = await Student.findOne({ id: userId });
   if (!student) {
@@ -143,7 +151,7 @@ const getMyOfferedCoursesFromDB = async (userId: string) => {
   }
 
   //
-  const result = await OfferedCourse.aggregate([
+  const aggregationQuery = [
     {
       $match: {
         semesterRegistration: currentOngoingRegistrationSemester?._id,
@@ -247,7 +255,7 @@ const getMyOfferedCoursesFromDB = async (userId: string) => {
 
         isAlreadyEnrolled: {
           $in: [
-            'course._id',
+            '$course._id',
             {
               $map: {
                 input: '$enrolledCourses',
@@ -265,9 +273,9 @@ const getMyOfferedCoursesFromDB = async (userId: string) => {
         isPreRequisitesFulFilled: true,
       },
     },
-  ]);
+  ];
 
-  return result;
+  return aggregationQuery;
 };
 
 const getSingleOfferedCourseFromDB = async (id: string) => {
