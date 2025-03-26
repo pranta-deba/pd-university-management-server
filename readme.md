@@ -1,3 +1,3 @@
 #Project PH University
 
-last : 21-5 Create courses using PH syllabus ( 9:50 min )
+last : 21-6 Modify academic semester data _ create semester registration

@@ -117,6 +117,13 @@ const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
     .fields();
 
   const result = await offeredCourseQuery.modelQuery;
+  const meta = await offeredCourseQuery.countTotal();
+  return { meta, data: result };
+};
+
+const getMyOfferedCoursesFromDB = async (userId: string) => {
+  console.log(userId);
+  const result = null;
   return result;
 };
 
@@ -220,4 +227,5 @@ export const OfferedCourseServices = {
   getSingleOfferedCourseFromDB,
   deleteOfferedCourseFromDB,
   updateOfferedCourseIntoDB,
+  getMyOfferedCoursesFromDB,
 };
