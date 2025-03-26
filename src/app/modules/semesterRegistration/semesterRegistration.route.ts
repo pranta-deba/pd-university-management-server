@@ -18,11 +18,18 @@ router.post(
 
 router.get(
   '/:id',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
   SemesterRegistrationController.getSingleSemesterRegistration,
 );
 
 router.patch(
   '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(
     SemesterRegistrationValidations.updateSemesterRegistrationValidationSchema,
   ),
@@ -31,11 +38,18 @@ router.patch(
 
 router.get(
   '/:id',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
   SemesterRegistrationController.getSingleSemesterRegistration,
 );
 
 router.delete(
   '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   SemesterRegistrationController.deleteSemesterRegistration,
 );
 
