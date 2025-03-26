@@ -147,7 +147,16 @@ const getMyOfferedCoursesFromDB = async (userId: string) => {
     {
       $match: {
         semesterRegistration: currentOngoingRegistrationSemester?._id,
-        student: student._id,
+        academicFaculty: student.academicFaculty,
+        academicDepartment: student.academicDepartment,
+      },
+    },
+    {
+      $lookup: {
+        from: 'courses',
+        localField: 'course',
+        foreignField: '_id',
+        as: 'course',
       },
     },
   ]);
