@@ -275,7 +275,33 @@ const getMyOfferedCoursesFromDB = async (
     },
   ];
 
-  return aggregationQuery;
+  const paginationQuery = [
+    {
+      $skip: skip,
+    },
+    {
+      $limit: limit,
+    },
+  ];
+
+  const result = await OfferedCourse.aggregate([
+    ...aggregationQuery,
+    ...paginationQuery,
+  ]);
+
+  const total = (await OfferedCourse.aggregate(aggregationQuery)).length;
+
+  const totalPage = Math.ceil(result.length / limit);
+
+  return {
+    result,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage,
+    },
+  };
 };
 
 const getSingleOfferedCourseFromDB = async (id: string) => {
