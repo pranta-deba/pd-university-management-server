@@ -9,6 +9,7 @@ import { Course } from '../Course/course.model';
 import { Faculty } from '../Faculty/faculty.model';
 import { hasTimeConflict } from './OfferedCourse.utils';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { Student } from '../student/student.model';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -122,7 +123,11 @@ const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getMyOfferedCoursesFromDB = async (userId: string) => {
-  console.log(userId);
+  const student = await Student.findOne({ id: userId });
+  if (!student) {
+    throw new AppError(status.NOT_FOUND, 'Student not found!');
+  }
+
   const result = null;
   return result;
 };
