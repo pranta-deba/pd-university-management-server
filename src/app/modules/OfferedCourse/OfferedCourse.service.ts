@@ -150,7 +150,6 @@ const getMyOfferedCoursesFromDB = async (
     );
   }
 
-  //
   const aggregationQuery = [
     {
       $match: {
