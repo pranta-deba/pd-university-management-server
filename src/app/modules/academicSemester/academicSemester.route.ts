@@ -27,7 +27,16 @@ router.get(
   AcademicSemesterControllers.getSingleAcademicSemester,
 );
 
-router.get('/', AcademicSemesterControllers.getAllAcademicSemesters);
+router.get(
+  '/',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
+  AcademicSemesterControllers.getAllAcademicSemesters,
+);
 
 router.patch(
   '/:semesterId',
