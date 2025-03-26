@@ -123,12 +123,35 @@ const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getMyOfferedCoursesFromDB = async (userId: string) => {
+  // find student
   const student = await Student.findOne({ id: userId });
   if (!student) {
     throw new AppError(status.NOT_FOUND, 'Student not found!');
   }
 
-  const result = null;
+  // find current ongoing semester
+  const currentOngoingRegistrationSemester = await SemesterRegistration.findOne(
+    {
+      status: 'ONGOING',
+    },
+  );
+  if (!currentOngoingRegistrationSemester) {
+    throw new AppError(
+      status.NOT_FOUND,
+      'There is no ongoing semester registration!',
+    );
+  }
+
+  //
+  const result = await OfferedCourse.aggregate([
+    {
+      $match: {
+        semesterRegistration: currentOngoingRegistrationSemester?._id,
+        student: student._id,
+      },
+    },
+  ]);
+
   return result;
 };
 
