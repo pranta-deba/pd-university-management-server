@@ -7,13 +7,6 @@ import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
-router.post(
-  '/create-offered-course',
-  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
-  validateRequest(OfferedCourseValidations.createOfferedCourseValidationSchema),
-  OfferedCourseControllers.createOfferedCourse,
-);
-
 router.get(
   '/',
   auth(USER_ROLE.admin, USER_ROLE.superAdmin, USER_ROLE.faculty),
@@ -35,6 +28,13 @@ router.get(
     USER_ROLE.student,
   ),
   OfferedCourseControllers.getSingleOfferedCourses,
+);
+
+router.post(
+  '/create-offered-course',
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  validateRequest(OfferedCourseValidations.createOfferedCourseValidationSchema),
+  OfferedCourseControllers.createOfferedCourse,
 );
 
 router.patch(
