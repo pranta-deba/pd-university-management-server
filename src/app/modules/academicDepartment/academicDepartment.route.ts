@@ -18,13 +18,23 @@ router.post(
 
 router.get(
   '/:departmentId',
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
   AcademicDepartmentControllers.getSingleAcademicDepartment,
 );
 
 router.get(
   '/',
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
   AcademicDepartmentControllers.getAllAcademicFaDepartments,
 );
 
