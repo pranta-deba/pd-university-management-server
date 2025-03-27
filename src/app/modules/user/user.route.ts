@@ -47,6 +47,13 @@ router.post(
   UserControllers.createAdmin,
 );
 
+router.post(
+  '/change-status/:id',
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  validateRequest(UserValidation.changeStatusValidationSchema),
+  UserControllers.changeStatus,
+);
+
 router.get(
   '/me',
   auth(
@@ -56,13 +63,6 @@ router.get(
     USER_ROLE.superAdmin,
   ),
   UserControllers.getMe,
-);
-
-router.post(
-  '/change-status/:id',
-  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
-  validateRequest(UserValidation.changeStatusValidationSchema),
-  UserControllers.changeStatus,
 );
 
 export const UserRoute = router;
