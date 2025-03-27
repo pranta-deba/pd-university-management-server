@@ -7,11 +7,10 @@ import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
-router.patch(
-  '/:id',
+router.get(
+  '/',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
-  validateRequest(studentValidations.updateStudentValidationSchema),
-  StudentControllers.updateStudent,
+  StudentControllers.getAllStudents,
 );
 
 router.get(
@@ -20,16 +19,17 @@ router.get(
   StudentControllers.getSingleStudent,
 );
 
+router.patch(
+  '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  validateRequest(studentValidations.updateStudentValidationSchema),
+  StudentControllers.updateStudent,
+);
+
 router.delete(
   '/:id',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   StudentControllers.deleteStudent,
-);
-
-router.get(
-  '/',
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
-  StudentControllers.getAllStudents,
 );
 
 export const StudentRoute = router;
