@@ -22,7 +22,7 @@ PD-University is a backend system for managing university-related operations, bu
 
 ## Entity-Relationship (ER) Diagram
 
-![UPDATED ER DIAGRAM](./diagram.png)
+![UPDATED ER DIAGRAM](./uploads/diagram.png)
 
 ### 2. Run the Project
 
