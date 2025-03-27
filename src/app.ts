@@ -4,6 +4,7 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
 import cookieParser from 'cookie-parser';
+import { rootPage } from './app/utils/rootResponse';
 
 const app: Application = express();
 
@@ -16,7 +17,7 @@ app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 app.use('/api/v1', router);
 
 app.get('/', async (req: Request, res: Response) => {
-  res.send('hello world');
+  res.send(rootPage);
 });
 
 // global error handle
