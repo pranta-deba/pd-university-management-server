@@ -17,6 +17,17 @@ router.post(
 );
 
 router.get(
+  '/',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student,
+  ),
+  SemesterRegistrationController.getAllSemesterRegistrations,
+);
+
+router.get(
   '/:id',
   auth(
     USER_ROLE.superAdmin,
@@ -36,23 +47,10 @@ router.patch(
   SemesterRegistrationController.updateSemesterRegistration,
 );
 
-router.get(
-  '/:id',
-  auth(
-    USER_ROLE.superAdmin,
-    USER_ROLE.admin,
-    USER_ROLE.faculty,
-    USER_ROLE.student,
-  ),
-  SemesterRegistrationController.getSingleSemesterRegistration,
-);
-
 router.delete(
   '/:id',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   SemesterRegistrationController.deleteSemesterRegistration,
 );
-
-router.get('/', SemesterRegistrationController.getAllSemesterRegistrations);
 
 export const semesterRegistrationRoutes = router;
